@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tasky-app
+  namespace: tasky
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tasky-app
+  template:
+    metadata:
+      labels:
+        app: tasky-app
+    spec:
+      containers:
+        - name: tasky-app
+          image: 767828724853.dkr.ecr.us-east-1.amazonaws.com/aloha-repo:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGODB_URI
+              value: "mongodb://aloha_database:eTywsYnKGTsX@aloha-docdb.cluster-cd4akcg4cfnr.us-east-1.docdb.amazonaws.com:27017"
+            - name: SECRET_KEY
+              value: "secret123"

@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tasky-app
+  namespace: argocd
+  project: default
+  source:
+    repoURL: https://github.com/ugoasoluka/Aloha-review.git
+    targetRevision: HEAD
+    path: gitops
+    # helm:
+    #   valueFiles:
+    #     - values.yaml # optional: if you're using Helm and have a values.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: tasky
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
