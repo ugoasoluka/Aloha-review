@@ -1,62 +1,78 @@
-# # Creates a DB subnet group for the RDS instance.
-# resource "aws_db_subnet_group" "mysql_subnet_group" {
-#   name       = "${var.db_name}-subnet-group"
-#   subnet_ids = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
+# Get the secret by name
+data "aws_secretsmanager_secret" "docdb_password_secret" {
+  name = "tasky-app-secrets"
+}
 
-#   tags = {
-#     Name = "Aloha DB subnet group"
-#   }
-# }
+# Get the latest version of the secret value
+data "aws_secretsmanager_secret_version" "docdb_password" {
+  secret_id = data.aws_secretsmanager_secret.docdb_password_secret.id
+}
 
-# resource "aws_db_instance" "mysql_instance" {
-#   identifier                  = "aloha"
-#   allocated_storage           = 20
-#   max_allocated_storage       = 100
-#   db_name                     = var.db_name
-#   engine                      = "mysql"
-#   engine_version              = "8.0"
-#   instance_class              = "db.t3.micro"
-#   username                    = var.db_name
-#   manage_master_user_password = true
-#   publicly_accessible         = false
-#   multi_az                    = true
-#   #   availability_zone           = "${var.aws_region}a"
-#   storage_encrypted       = false
-#   deletion_protection     = false
-#   skip_final_snapshot     = true
-#   db_subnet_group_name    = aws_db_subnet_group.mysql_subnet_group.name
-#   vpc_security_group_ids  = [aws_security_group.rds_security_group.id]
-#   backup_retention_period = 1
-#   port                    = var.db_port
-#   tags = {
-#     Name = "${var.db_name}-db"
-#   }
-# }
+# Decode the JSON secret into a map
+locals {
+  docdb_secret_json = jsondecode(data.aws_secretsmanager_secret_version.docdb_password.secret_string)
+}
 
-# # Creates a security group for the RDS instance.
-# resource "aws_security_group" "rds_security_group" {
-#   name        = "${var.db_name}-SG"
-#   description = "Security Group for RDS"
-#   vpc_id      = aws_vpc.aloha_vpc.id
+# Create the subnet group for DocumentDB
+resource "aws_docdb_subnet_group" "docdb_subnet_group" {
+  name       = "${var.db_name}-subnet-group"
+  subnet_ids = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
 
-#   tags = {
-#     Name = "RDS-Security-Group"
-#   }
-# }
+  tags = {
+    Name = "Aloha DocDB Subnet Group"
+  }
+}
 
-# # Allows inbound traffic on port 3306 (mySQL). HOW DO I CONNECT THIS TO MY DB?
-# resource "aws_vpc_security_group_ingress_rule" "allow_from_eks_nodes" {
-#   security_group_id = aws_security_group.rds_security_group.id
-#   #   referenced_security_group_id = aws_security_group.aloha_worker_node_sg.id
-#   cidr_ipv4   = var.internet_cidr_ipv4 ###MAKE SURE TO CHANGE THIS!!!!!
-#   from_port   = 3306
-#   ip_protocol = "tcp"
-#   to_port     = 3306
-# }
+# Create the DocumentDB cluster
+resource "aws_docdb_cluster" "docdb_cluster" {
+  cluster_identifier     = "aloha-docdb"
+  master_username        = var.db_name
+  master_password        = local.docdb_secret_json["DocDBMasterPassword"]
+  db_subnet_group_name   = aws_docdb_subnet_group.docdb_subnet_group.name
+  vpc_security_group_ids = [aws_security_group.docdb_sg.id]
+  engine_version         = "4.0.0"
+  skip_final_snapshot    = true
 
-# # Allows all outbound traffic from the RDS instance.
-# resource "aws_vpc_security_group_egress_rule" "allow_all_egress" {
-#   security_group_id = aws_security_group.rds_security_group.id
-#   cidr_ipv4         = var.internet_cidr_ipv4
-#   ip_protocol       = "-1"
-# }
+  tags = {
+    Name = "${var.db_name}-docdb-cluster"
+  }
+}
+
+# Create the DocumentDB instance
+resource "aws_docdb_cluster_instance" "docdb_instance" {
+  count              = 1
+  identifier         = "aloha-docdb-instance-${count.index}"
+  cluster_identifier = aws_docdb_cluster.docdb_cluster.id
+  instance_class     = "db.t3.medium"
+
+  tags = {
+    Name = "${var.db_name}-docdb-instance-${count.index}"
+  }
+}
+
+# Create a security group to allow EKS access to DocDB
+resource "aws_security_group" "docdb_sg" {
+  name        = "${var.db_name}-docdb-sg"
+  description = "Allow access to DocumentDB from EKS nodes"
+  vpc_id      = aws_vpc.aloha_vpc.id
+
+  tags = {
+    Name = "DocDB-Security-Group"
+  }
+}
+
+# Allow inbound from EKS node security group (update SG ID as needed)
+resource "aws_vpc_security_group_ingress_rule" "allow_eks_to_docdb" {
+  security_group_id            = aws_security_group.docdb_sg.id
+  referenced_security_group_id = "sg-04a8a8583fcdf69f6" # EKS node SG
+  from_port                    = 27017
+  to_port                      = 27017
+  ip_protocol                  = "tcp"
+}
+
+# Allow all outbound traffic from DocDB
+resource "aws_vpc_security_group_egress_rule" "docdb_allow_all_egress" {
+  security_group_id = aws_security_group.docdb_sg.id
+  cidr_ipv4         = var.internet_cidr_ipv4
+  ip_protocol       = "-1"
+}
