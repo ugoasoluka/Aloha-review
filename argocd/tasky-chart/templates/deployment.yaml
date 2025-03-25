@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: { { .Values.name } }
+  namespace: { { .Values.namespace } }
+spec:
+  replicas: { { .Values.replicaCount } }
+  selector:
+    matchLabels:
+      app: { { .Values.name } }
+  template:
+    metadata:
+      labels:
+        app: { { .Values.name } }
+    spec:
+      containers:
+        - name: { { .Values.name } }
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          ports:
+            - containerPort: { { .Values.containerPort } }
+          env:
+            - name: MONGODB_URI
+              value: "{{ .Values.env.MONGODB_URI }}"
+            - name: SECRET_KEY
+              value: "{{ .Values.env.SECRET_KEY }}"
+          volumeMounts:
+            - name: docdb-cert
+              mountPath: "/certs"
+              readOnly: true
+      volumes:
+        - name: docdb-cert
+          secret:
+            secretName: docdb-root-ca

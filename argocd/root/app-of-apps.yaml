@@ -56,3 +56,23 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: tasky
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/ugoasoluka/Aloha-review
+    targetRevision: HEAD
+    path: "argocd/tasky-chart"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: "tasky"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
