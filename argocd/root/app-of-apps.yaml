@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-org/Aloha-review.git
+    repoURL: https://github.com/ugoasoluka/Aloha-review
     targetRevision: HEAD
     path: argocd
   destination:
