@@ -20,6 +20,6 @@ spec:
             - containerPort: 3000
           env:
             - name: MONGODB_URI
-              value: "mongodb://aloha_database:eTywsYnKGTsX@aloha-docdb.cluster-cd4akcg4cfnr.us-east-1.docdb.amazonaws.com:27017/?tls=true"
+              value: "mongodb://aloha_database:eTywsYnKGTsX@aloha-docdb.cluster-cd4akcg4cfnr.us-east-1.docdb.amazonaws.com:27017/?tls=false"
             - name: SECRET_KEY
               value: "secret123"
