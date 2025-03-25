@@ -24,6 +24,7 @@ metadata:
   name: aws-load-balancer-controller
   namespace: argocd
 spec:
+  project: default
   source:
     repoURL: https://github.com/ugoasoluka/Aloha-review
     targetRevision: HEAD
@@ -43,6 +44,7 @@ metadata:
   name: external-dns
   namespace: argocd
 spec:
+  project: default
   source:
     repoURL: https://github.com/ugoasoluka/Aloha-review
     targetRevision: HEAD
