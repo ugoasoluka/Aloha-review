@@ -20,9 +20,15 @@ spec:
             - containerPort: {{ .Values.containerPort }}
           env:
             - name: MONGODB_URI
-              value: "{{ .Values.env.MONGODB_URI }}"
+              valueFrom:
+                secretKeyRef:
+                  name: tasky-secrets-k8s      
+                  key: MONGODB_URI             
             - name: SECRET_KEY
-              value: "{{ .Values.env.SECRET_KEY }}"
+              valueFrom:
+                secretKeyRef:
+                  name: tasky-secrets-k8s
+                  key: SECRET_KEY
           volumeMounts:
             - name: docdb-cert
               mountPath: "/certs"

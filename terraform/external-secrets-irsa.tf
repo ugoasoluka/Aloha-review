@@ -40,7 +40,7 @@ resource "aws_iam_policy" "external_secrets_policy" {
           "secretsmanager:GetSecretValue",
           "secretsmanager:ListSecrets"
         ]
-        Resource = "*"
+        Resource = "arn:aws:secretsmanager:us-east-1:767828724853:secret:tasky-app-secrets-8fXOww"
       }
     ]
   })
