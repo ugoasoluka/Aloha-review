@@ -13,7 +13,7 @@ metadata:
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:767828724853:certificate/08b691c3-8c40-42ea-9a7a-2a02b0ae5c2b
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/ssl-redirect: "443"
-    external-dns.alpha.kubernetes.io/hostname: "{{ .Values.ingress.host }}"
+    # external-dns.alpha.kubernetes.io/hostname: "{{ .Values.ingress.host }}"
 spec:
   rules:
     - host: "{{ .Values.ingress.host }}"
