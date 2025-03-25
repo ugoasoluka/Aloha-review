@@ -31,7 +31,7 @@ spec:
     path: "argocd/lb-controller"
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: "aws-lb-controller"
+    namespace: "kube-system"
   syncPolicy:
     automated:
       prune: true
