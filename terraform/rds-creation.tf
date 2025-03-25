@@ -40,13 +40,12 @@ resource "aws_docdb_cluster" "docdb_cluster" {
 
 # Create the DocumentDB instance
 resource "aws_docdb_cluster_instance" "docdb_instance" {
-  count              = 1
-  identifier         = "aloha-docdb-instance-${count.index}"
+  identifier         = "aloha-docdb-instance-0"
   cluster_identifier = aws_docdb_cluster.docdb_cluster.id
   instance_class     = "db.t3.medium"
 
   tags = {
-    Name = "${var.db_name}-docdb-instance-${count.index}"
+    Name = "${var.db_name}-docdb-instance-0"
   }
 }
 
