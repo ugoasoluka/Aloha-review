@@ -6,7 +6,7 @@ image:
   repository: 767828724853.dkr.ecr.us-east-1.amazonaws.com/aloha-repo
   tag: latest
 
-containerPort: 3000
+containerPort: 8080
 
 env:
   MONGODB_URI: "mongodb://aloha_database:eTywsYnKGTsX@aloha-docdb.cluster-xxx.us-east-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=/certs/rds-combined-ca-bundle.pem"
