@@ -57,3 +57,23 @@ spec:
     automated:
       prune: true
       selfHeal: true
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-secrets
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/ugoasoluka/Aloha-review
+    targetRevision: HEAD
+    path: "argocd/external-secrets"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: "external-secrets"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
