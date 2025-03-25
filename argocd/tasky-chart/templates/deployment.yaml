@@ -22,12 +22,12 @@ spec:
             - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:
-                  name: tasky-secrets      
+                  name: tasky-app-secrets      
                   key: MONGODB_URI             
             - name: SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: tasky-secrets
+                  name: tasky-app-secrets
                   key: SECRET_KEY
           volumeMounts:
             - name: docdb-cert
