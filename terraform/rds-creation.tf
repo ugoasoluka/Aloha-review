@@ -63,7 +63,7 @@ resource "aws_security_group" "docdb_sg" {
 # Allow inbound from EKS node security group (update SG ID as needed)
 resource "aws_vpc_security_group_ingress_rule" "allow_eks_to_docdb" {
   security_group_id            = aws_security_group.docdb_sg.id
-  referenced_security_group_id = "sg-04a8a8583fcdf69f6" # EKS node SG
+  cidr_ipv4                    = var.internet_cidr_ipv4
   from_port                    = 27017
   to_port                      = 27017
   ip_protocol                  = "tcp"

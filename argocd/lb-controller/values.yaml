@@ -156,7 +156,7 @@ aws-load-balancer-controller:
   region: us-east-1
 
   # The VPC ID for the Kubernetes cluster. Set this manually when your pods are unable to use the metadata service to determine this automatically
-  vpcId: vpc-0baa1b4bd078afe4b
+  vpcId: vpc-035d0722f7641a6ca
 
   # This is alternative to vpcId. Set this when your pods are unable to use the metadata service to determine VPC automatically.
   vpcTags: {}
