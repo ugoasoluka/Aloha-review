@@ -8,10 +8,6 @@ image:
 
 containerPort: 8080
 
-env:
-  MONGODB_URI: "mongodb://aloha_database:eTywsYnKGTsX@aloha-docdb.cluster-cd4akcg4cfnr.us-east-1.docdb.amazonaws.com:27017/?tls=true&tlsCAFile=/certs/rds-combined-ca-bundle.pem"
-  SECRET_KEY: "secret123"
-
 ingress:
   enabled: true
   host: "tasky.ugo-projects.click"
