@@ -6,7 +6,7 @@ on:
 env:
   AWS_REGION: "us-east-1"               
   ECR_REPOSITORY: "tasky-app-repo"          
-  IMAGE_TAG: "latest"                   
+  IMAGE_TAG: "v1.0.1"                   
 
 jobs:
   build-and-push-to-ecr:
