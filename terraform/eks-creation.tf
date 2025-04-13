@@ -1,8 +1,7 @@
-
 # -----------------------------------
-# EKS Cluster Creation Example
+# EKS Cluster Creation
 # -----------------------------------
-resource "aws_eks_cluster" "aloha_eks_cluster" {
+resource "aws_eks_cluster" "tasky_eks_cluster" {
   name     = var.eks_cluster_name
   role_arn = aws_iam_role.eks_cluster_role.arn
 
@@ -17,8 +16,8 @@ resource "aws_eks_cluster" "aloha_eks_cluster" {
 }
 
 resource "aws_eks_node_group" "eks_node_group" {
-  cluster_name    = aws_eks_cluster.aloha_eks_cluster.name
-  node_group_name = "eks-node-group"
+  cluster_name    = aws_eks_cluster.tasky_eks_cluster.name
+  node_group_name = "tasky-eks-node-group"
   node_role_arn   = aws_iam_role.eks_worker_node_role.arn
   subnet_ids      = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
 

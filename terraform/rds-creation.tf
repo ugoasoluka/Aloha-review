@@ -19,13 +19,13 @@ resource "aws_docdb_subnet_group" "docdb_subnet_group" {
   subnet_ids = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
 
   tags = {
-    Name = "Aloha DocDB Subnet Group"
+    Name = "Tasky DocDB Subnet Group"
   }
 }
 
 # Create the DocumentDB cluster
 resource "aws_docdb_cluster" "docdb_cluster" {
-  cluster_identifier     = "aloha-docdb"
+  cluster_identifier     = "tasky-docdb"
   master_username        = var.db_name
   master_password        = local.docdb_secret_json["DocDBMasterPassword"]
   db_subnet_group_name   = aws_docdb_subnet_group.docdb_subnet_group.name
@@ -40,7 +40,7 @@ resource "aws_docdb_cluster" "docdb_cluster" {
 
 # Create the DocumentDB instance
 resource "aws_docdb_cluster_instance" "docdb_instance" {
-  identifier         = "aloha-docdb-instance-0"
+  identifier         = "tasky-docdb-instance-0"
   cluster_identifier = aws_docdb_cluster.docdb_cluster.id
   instance_class     = "db.t3.medium"
 
@@ -53,20 +53,20 @@ resource "aws_docdb_cluster_instance" "docdb_instance" {
 resource "aws_security_group" "docdb_sg" {
   name        = "${var.db_name}-docdb-sg"
   description = "Allow access to DocumentDB from EKS nodes"
-  vpc_id      = aws_vpc.aloha_vpc.id
+  vpc_id      = aws_vpc.tasky_vpc.id
 
   tags = {
     Name = "DocDB-Security-Group"
   }
 }
 
-# Allow inbound from EKS node security group (update SG ID as needed)
+# Allow inbound from EKS node security group
 resource "aws_vpc_security_group_ingress_rule" "allow_eks_to_docdb" {
-  security_group_id            = aws_security_group.docdb_sg.id
-  cidr_ipv4                    = var.internet_cidr_ipv4
-  from_port                    = 27017
-  to_port                      = 27017
-  ip_protocol                  = "tcp"
+  security_group_id = aws_security_group.docdb_sg.id
+  cidr_ipv4         = var.internet_cidr_ipv4
+  from_port         = 27017
+  to_port           = 27017
+  ip_protocol       = "tcp"
 }
 
 # Allow all outbound traffic from DocDB

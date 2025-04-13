@@ -1,5 +1,5 @@
 #Creates ECR repository for Docker Image
-resource "aws_ecr_repository" "aloha_repo" {
+resource "aws_ecr_repository" "tasky_repo" {
   name                 = "${var.ecr_repo_name}-repo"
   image_tag_mutability = "IMMUTABLE"
   force_delete         = true

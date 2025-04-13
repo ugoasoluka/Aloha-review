@@ -11,7 +11,7 @@ variable "aws_region" {
 variable "db_name" {
   description = "database name"
   type        = string
-  default     = "aloha_database"
+  default     = "tasky_database"
 }
 
 # Variable for the database port.
@@ -24,10 +24,10 @@ variable "db_port" {
 # Variable to store the ECR Repo Name
 variable "ecr_repo_name" {
   description = "ECR Repo Name"
-  default     = "aloha"
+  default     = "tasky-app"
 }
 # Variables related to the EKS cluster.
 variable "eks_cluster_name" {
   type    = string
-  default = "aloha-cluster"
+  default = "tasky-cluster"
 }

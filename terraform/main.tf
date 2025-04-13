@@ -8,12 +8,12 @@ terraform {
   }
   # Adding Backend as S3 for Remote State Storage
   backend "s3" {
-    bucket = "aloha-bucket-123"
-    key    = "aloha-terraform-state-files/terraform.tfstate"
+    bucket = "tasky-bucket-123"
+    key    = "tasky-terraform-state-files/terraform.tfstate"
     region = "us-east-1"
 
     # For State Locking
-    dynamodb_table = "aloha-state-lock"
+    dynamodb_table = "tasky-state-lock"
   }
 }
 # Provider Block

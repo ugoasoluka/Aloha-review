@@ -1,12 +1,12 @@
 ###############################################
 # VPC
 ###############################################
-resource "aws_vpc" "aloha_vpc" {
+resource "aws_vpc" "tasky_vpc" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
 
   tags = {
-    Name = "aloha-VPC"
+    Name = "tasky-VPC"
   }
 }
 
@@ -14,37 +14,37 @@ resource "aws_vpc" "aloha_vpc" {
 # Public Subnets, Internet Gateway, and Public Route Table
 ###############################################
 resource "aws_subnet" "public_subnet_a" {
-  vpc_id                  = aws_vpc.aloha_vpc.id
+  vpc_id                  = aws_vpc.tasky_vpc.id
   cidr_block              = var.public_subnet_cidr_a
   availability_zone       = var.availability_zone_a
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "aloha-public-subnet-a"
+    Name = "tasky-public-subnet-a"
   }
 }
 
 resource "aws_subnet" "public_subnet_b" {
-  vpc_id                  = aws_vpc.aloha_vpc.id
+  vpc_id                  = aws_vpc.tasky_vpc.id
   cidr_block              = var.public_subnet_cidr_b
   availability_zone       = var.availability_zone_b
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "aloha-public-subnet-b"
+    Name = "tasky-public-subnet-b"
   }
 }
 
 resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.aloha_vpc.id
+  vpc_id = aws_vpc.tasky_vpc.id
 
   tags = {
-    Name = "aloha-igw"
+    Name = "tasky-igw"
   }
 }
 
 resource "aws_route_table" "public_route_table" {
-  vpc_id = aws_vpc.aloha_vpc.id
+  vpc_id = aws_vpc.tasky_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -52,7 +52,7 @@ resource "aws_route_table" "public_route_table" {
   }
 
   tags = {
-    Name = "aloha-public-route-table"
+    Name = "tasky-public-route-table"
   }
 }
 
@@ -71,22 +71,22 @@ resource "aws_route_table_association" "public_subnet_b_association" {
 # Private Subnets
 ###############################################
 resource "aws_subnet" "private_subnet_a" {
-  vpc_id            = aws_vpc.aloha_vpc.id
+  vpc_id            = aws_vpc.tasky_vpc.id
   cidr_block        = var.private_subnet_cidr_a
   availability_zone = var.availability_zone_a
 
   tags = {
-    Name = "aloha-private-subnet-a"
+    Name = "tasky-private-subnet-a"
   }
 }
 
 resource "aws_subnet" "private_subnet_b" {
-  vpc_id            = aws_vpc.aloha_vpc.id
+  vpc_id            = aws_vpc.tasky_vpc.id
   cidr_block        = var.private_subnet_cidr_b
   availability_zone = var.availability_zone_b
 
   tags = {
-    Name = "aloha-private-subnet-b"
+    Name = "tasky-private-subnet-b"
   }
 }
 
@@ -98,7 +98,7 @@ resource "aws_subnet" "private_subnet_b" {
 resource "aws_eip" "elastic_ip_nat_gw_a" {
   domain = "vpc"
   tags = {
-    Name = "aloha-nat-eip-a"
+    Name = "tasky-nat-eip-a"
   }
 }
 
@@ -107,7 +107,7 @@ resource "aws_nat_gateway" "nat_gw_a" {
   subnet_id     = aws_subnet.public_subnet_a.id
 
   tags = {
-    Name = "aloha-nat-gateway-a"
+    Name = "tasky-nat-gateway-a"
   }
 
   depends_on = [aws_internet_gateway.gw, aws_eip.elastic_ip_nat_gw_a]
@@ -117,7 +117,7 @@ resource "aws_nat_gateway" "nat_gw_a" {
 resource "aws_eip" "elastic_ip_nat_gw_b" {
   domain = "vpc"
   tags = {
-    Name = "aloha-nat-eip-b"
+    Name = "tasky-nat-eip-b"
   }
 }
 
@@ -126,7 +126,7 @@ resource "aws_nat_gateway" "nat_gw_b" {
   subnet_id     = aws_subnet.public_subnet_b.id
 
   tags = {
-    Name = "aloha-nat-gateway-b"
+    Name = "tasky-nat-gateway-b"
   }
 
   depends_on = [aws_internet_gateway.gw, aws_eip.elastic_ip_nat_gw_b]
@@ -136,7 +136,7 @@ resource "aws_nat_gateway" "nat_gw_b" {
 # Private Route Tables (One per Private Subnet AZ)
 ###############################################
 resource "aws_route_table" "private_route_table_a" {
-  vpc_id = aws_vpc.aloha_vpc.id
+  vpc_id = aws_vpc.tasky_vpc.id
 
   route {
     cidr_block     = "0.0.0.0/0"
@@ -144,12 +144,12 @@ resource "aws_route_table" "private_route_table_a" {
   }
 
   tags = {
-    Name = "aloha-private-route-table-a"
+    Name = "tasky-private-route-table-a"
   }
 }
 
 resource "aws_route_table" "private_route_table_b" {
-  vpc_id = aws_vpc.aloha_vpc.id
+  vpc_id = aws_vpc.tasky_vpc.id
 
   route {
     cidr_block     = "0.0.0.0/0"
@@ -157,7 +157,7 @@ resource "aws_route_table" "private_route_table_b" {
   }
 
   tags = {
-    Name = "aloha-private-route-table-b"
+    Name = "tasky-private-route-table-b"
   }
 }
 
@@ -173,18 +173,3 @@ resource "aws_route_table_association" "private_subnet_b_association" {
   subnet_id      = aws_subnet.private_subnet_b.id
   route_table_id = aws_route_table.private_route_table_b.id
 }
-
-# ###############################################
-# # EKS security group and module creation
-# ###############################################
-
-# module "sgs" {
-#   source = "./eks-sg"
-#   vpc_id = aws_vpc.aloha_vpc.id
-# }
-
-# module "eks" {
-#   source     = "./eks"
-#   subnet_ids = [aws_subnet.private_subnet_a.id, aws_subnet.private_subnet_b.id]
-#   sg_ids     = module.sgs.security_group_public
-# }
