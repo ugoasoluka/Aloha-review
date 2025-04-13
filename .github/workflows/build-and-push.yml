@@ -5,7 +5,7 @@ on:
 
 env:
   AWS_REGION: "us-east-1"               
-  ECR_REPOSITORY: "aloha-repo"          
+  ECR_REPOSITORY: "tasky-app-repo"          
   IMAGE_TAG: "latest"                   
 
 jobs:
