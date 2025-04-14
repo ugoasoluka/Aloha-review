@@ -2261,7 +2261,7 @@ server:
       alb.ingress.kubernetes.io/target-type: ip
       alb.ingress.kubernetes.io/backend-protocol: HTTP
       alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80}, {"HTTPS":443}]'
-      alb.ingress.kubernetes.io/subnets: subnet-059c0533d9f2d1b5d, subnet-0bcec4f686dfbf66c
+      alb.ingress.kubernetes.io/subnets: subnet-0a0424a672f7a3271, subnet-0bd143ae47603d489
       alb.ingress.kubernetes.io/group.name: "argocd"
       alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:767828724853:certificate/08b691c3-8c40-42ea-9a7a-2a02b0ae5c2b
 

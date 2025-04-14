@@ -3,8 +3,8 @@ namespace: tasky
 replicaCount: 2
 
 image:
-  repository: 767828724853.dkr.ecr.us-east-1.amazonaws.com/aloha-repo
-  tag: latest
+  repository: 767828724853.dkr.ecr.us-east-1.amazonaws.com/tasky-app-repo
+  tag: v1.0.1
 
 containerPort: 8080
 

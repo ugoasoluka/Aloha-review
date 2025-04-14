@@ -112,7 +112,7 @@ aws-load-balancer-controller:
   enableCertManager: false
 
   # The name of the Kubernetes cluster. A non-empty value is required
-  clusterName: aloha-cluster
+  clusterName: tasky-cluster
 
   # cluster contains configurations specific to the kubernetes cluster
   cluster:
@@ -156,7 +156,7 @@ aws-load-balancer-controller:
   region: us-east-1
 
   # The VPC ID for the Kubernetes cluster. Set this manually when your pods are unable to use the metadata service to determine this automatically
-  vpcId: vpc-035d0722f7641a6ca
+  vpcId: vpc-06e4554e926c94d71
 
   # This is alternative to vpcId. Set this when your pods are unable to use the metadata service to determine VPC automatically.
   vpcTags: {}
