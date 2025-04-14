@@ -7,7 +7,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/ugoasoluka/Aloha-review
+    repoURL: https://github.com/ugoasoluka/Tasky-Infrastructure-Deployment
     targetRevision: HEAD
     path: "argocd/lb-controller"
   destination:
@@ -28,7 +28,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/ugoasoluka/Aloha-review
+    repoURL: https://github.com/ugoasoluka/Tasky-Infrastructure-Deployment
     targetRevision: HEAD
     path: "argocd/tasky-chart"
   destination:
@@ -50,7 +50,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/ugoasoluka/Aloha-review
+    repoURL: https://github.com/ugoasoluka/Tasky-Infrastructure-Deployment
     targetRevision: HEAD
     path: "argocd/external-dns"
   destination:
@@ -72,7 +72,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/ugoasoluka/Aloha-review
+    repoURL: https://github.com/ugoasoluka/Tasky-Infrastructure-Deployment
     targetRevision: HEAD
     path: "argocd/external-secrets"
   destination:

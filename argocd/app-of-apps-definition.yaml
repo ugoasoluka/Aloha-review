@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/ugoasoluka/Aloha-review
+    repoURL: https://github.com/ugoasoluka/Tasky-Infrastructure-Deployment
     targetRevision: HEAD
     path: argocd/root
   destination:
